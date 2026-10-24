@@ -1,12 +1,12 @@
 /**
- * Card Vault web app: the server side.
+ * BubTCG web app: the server side.
  * Serves Index.html and gives it data from the "Pokemon Cards" sheet.
  * Deploy: Deploy > New deployment > Web app (Execute as: Me, Who has access: Only myself).
  */
 
 function doGet() {
   return HtmlService.createHtmlOutputFromFile('Index')
-    .setTitle('Card Vault')
+    .setTitle('BubTCG')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1, viewport-fit=cover')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.DEFAULT);
 }
@@ -115,7 +115,7 @@ function addCard(card) {
   sheet.getRange(row, 1, 1, 8).setValues([[card.name, card.set, "'" + card.number, card.rarity || '',
                                             card.condition || 'Near Mint', '', variant, qty]]);
   if (price) sheet.getRange(row, CONFIG.COL.estValue).setValue(price);
-  sheet.getRange(row, 11, 1, 2).setValues([['No', 'Added in Card Vault']]);
+  sheet.getRange(row, 11, 1, 2).setValues([['No', 'Added in BubTCG']]);
   sheet.getRange(row, CONFIG.COL.id, 1, 2).setValues([[card.id, price || '']]);
   return { row, qty, merged: false };
 }

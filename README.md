@@ -1,4 +1,4 @@
-# Pokémon Price Bot + Card Vault app
+# Pokémon Price Bot + BubTCG app
 
 A Google Apps Script bot that lives inside my "Pokemon Cards" Google Sheet. Every morning it:
 
@@ -17,7 +17,7 @@ It runs on Google's servers, so my computer can be off.
 
 The sheet also gets a **Price Bot** menu with *Update prices now*, *Turn on daily updates* and *Turn off daily updates*.
 
-## Card Vault app
+## BubTCG app
 
 `App.gs` and `Index.html` turn the bot into a web app you can open on your phone:
 

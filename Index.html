@@ -4,7 +4,7 @@
 <base target="_top">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Card Vault</title>
+<title>BubTCG</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -49,7 +49,7 @@ button { cursor: pointer; }
 /* ---- header ---- */
 header { padding-top: calc(env(safe-area-inset-top, 0px) + 18px); padding-bottom: 14px; }
 .brand { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.brand h1 { font-size: 1rem; letter-spacing: .14em; text-transform: uppercase; margin: 0; font-weight: 800; }
+.brand h1 { font-size: 1.25rem; letter-spacing: -.01em; margin: 0; font-weight: 800; }
 .brand h1 span { color: var(--accent); }
 .refresh { border: 1px solid var(--line); background: var(--sheet); border-radius: 999px; padding: 6px 14px; font-size: .85rem; font-weight: 600; }
 .refresh[disabled] { opacity: .6; cursor: progress; }
@@ -149,7 +149,7 @@ h2 { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color:
 <div class="wrap">
   <header>
     <div class="brand">
-      <h1>Card <span>Vault</span></h1>
+      <h1>Bub<span>TCG</span></h1>
       <button class="refresh" id="refresh" type="button" title="Get the latest TCGplayer prices now">Refresh prices</button>
     </div>
     <div class="value" id="value">
