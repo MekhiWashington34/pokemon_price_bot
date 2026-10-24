@@ -1,4 +1,4 @@
-# Pokémon Price Bot
+# Pokémon Price Bot + Card Vault app
 
 A Google Apps Script bot that lives inside my "Pokemon Cards" Google Sheet. Every morning it:
 
@@ -16,6 +16,24 @@ It runs on Google's servers, so my computer can be off.
 3. Pick **setup** in the function dropdown and click **Run**, then allow the permissions Google asks for.
 
 The sheet also gets a **Price Bot** menu with *Update prices now*, *Turn on daily updates* and *Turn off daily updates*.
+
+## Card Vault app
+
+`App.gs` and `Index.html` turn the bot into a web app you can open on your phone:
+
+- **Collection**: total value, value-over-time chart, biggest movers, and every card with its price and change (search and sort)
+- **Trade**: pick cards you'd give from your collection, search for cards you'd get, and see if the trade is fair
+- **Add cards**: search any card, pick the version, condition and quantity, and add it to the sheet (with its price-bot ID filled in)
+- **Refresh prices** runs the price bot on demand
+
+### Install the app
+
+1. In the Apps Script editor, click **+ → Script**, name it `App`, and paste in `App.gs`.
+2. Click **+ → HTML**, name it `Index`, and paste in `Index.html`. Save.
+3. Click **Deploy → New deployment**. Under *Select type* choose **Web app**. Set *Execute as* to **Me** and *Who has access* to **Only myself**. Click **Deploy** and allow the permissions.
+4. Copy the **Web app URL**. Open it on your phone and use **Share → Add to Home Screen** (iPhone) or **⋮ → Add to Home screen** (Android).
+
+After changing the code later, use **Deploy → Manage deployments → Edit → Version: New version** so the same URL gets the update.
 
 ## Settings
 
