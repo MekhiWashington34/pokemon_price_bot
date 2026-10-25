@@ -253,6 +253,9 @@ function parseChange(s) {
 }
 function call(fn, ...args) {
   return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error('Google didn’t answer. Reload the app and try again.')), 45000);
+    resolve = (r => v => { clearTimeout(t); r(v); })(resolve);
+    reject = (r => e => { clearTimeout(t); r(e); })(reject);
     google.script.run.withSuccessHandler(resolve).withFailureHandler(e => reject(e && e.message ? e : new Error(String(e))))[fn](...args);
   });
 }
@@ -464,7 +467,9 @@ $('addResults').addEventListener('click', async e => {
 });
 
 /* ---------- start ---------- */
-call('getCollection').then(load).catch(err => {
+const BOOT = <?!= boot ?>;
+if (BOOT && BOOT.cards) load(BOOT);
+else call('getCollection').then(load).catch(err => {
   $('loading').innerHTML = `<p class="error">Couldn’t open your sheet: ${esc(err.message)}</p>`;
   $('valueSub').textContent = '';
 });

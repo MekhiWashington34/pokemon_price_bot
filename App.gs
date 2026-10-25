@@ -5,7 +5,11 @@
  */
 
 function doGet() {
-  return HtmlService.createHtmlOutputFromFile('Index')
+  const t = HtmlService.createTemplateFromFile('Index');
+  let data;
+  try { data = getCollection(); } catch (e) { data = { error: String(e.message || e) }; }
+  t.boot = JSON.stringify(data).replace(/</g, '\\u003c');
+  return t.evaluate()
     .setTitle('BubTCG')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1, viewport-fit=cover')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.DEFAULT);
