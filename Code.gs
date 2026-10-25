@@ -64,7 +64,7 @@ function updatePrices() {
 
   // 1. Fetch prices for every card that has a Price ID
   const ids = [...new Set(rows.map(r => String(r[CONFIG.COL.id - 1]).trim()).filter(Boolean))];
-  const prices = fetchPrices_(ids);
+  const { prices, failed } = fetchPrices_(ids);
 
   // 2. Work out new prices and changes
   const props = PropertiesService.getScriptProperties();
@@ -83,7 +83,9 @@ function updatePrices() {
       priceOut.push([r[CONFIG.COL.market - 1]]);
       estOut.push([r[CONFIG.COL.estValue - 1]]);
       checkedOut.push([r[CONFIG.COL.checked - 1]]);
-      changeOut.push([id ? (card ? 'no TCGplayer price' : 'not found') : r[CONFIG.COL.change - 1]]);
+      changeOut.push([!id ? r[CONFIG.COL.change - 1]
+                    : failed.has(id) ? 'check failed, kept last price'
+                    : card ? 'no TCGplayer price' : 'not found']);
       return;
     }
     updated++;
@@ -136,25 +138,43 @@ function updatePrices() {
   }
 }
 
-/** Gets cards from the Pokémon TCG API in batches, retrying when the API is busy. */
+/**
+ * Gets cards from the Pokémon TCG API in batches, retrying when the API is busy.
+ * If one batch keeps failing, it's skipped (those cards keep their last price) and the rest still update.
+ */
 function fetchPrices_(ids) {
   const out = {};
+  const failed = new Set();
   const headers = CONFIG.API_KEY ? { 'X-Api-Key': CONFIG.API_KEY } : {};
+  let lastCode = 0;
   for (let i = 0; i < ids.length; i += 40) {
-    const q = ids.slice(i, i + 40).map(id => `id:${id}`).join(' OR ');
+    const batch = ids.slice(i, i + 40);
+    const q = batch.map(id => `id:${id}`).join(' OR ');
     const url = `${API}?pageSize=250&select=id,tcgplayer&q=${encodeURIComponent(q)}`;
-    for (let attempt = 1; attempt <= 6; attempt++) {
-      const res = UrlFetchApp.fetch(url, { headers, muteHttpExceptions: true });
-      if (res.getResponseCode() === 200) {
-        JSON.parse(res.getContentText()).data.forEach(c => out[c.id] = c);
-        break;
+    let ok = false;
+    for (let attempt = 1; attempt <= 4 && !ok; attempt++) {
+      try {
+        const res = UrlFetchApp.fetch(url, { headers, muteHttpExceptions: true });
+        lastCode = res.getResponseCode();
+        if (lastCode === 200) {
+          JSON.parse(res.getContentText()).data.forEach(c => out[c.id] = c);
+          ok = true;
+        }
+      } catch (e) {
+        lastCode = String(e.message || e);
       }
-      if (attempt === 6) throw new Error(`Pokémon TCG API failed (${res.getResponseCode()}). Try again later.`);
-      Utilities.sleep(3000 * attempt);
+      if (!ok && attempt < 4) Utilities.sleep(2500 * attempt);
+    }
+    if (!ok) {
+      batch.forEach(id => failed.add(id));
+      console.warn(`Skipped ${batch.length} cards: Pokémon TCG API failed (${lastCode}).`);
     }
     Utilities.sleep(1500);
   }
-  return out;
+  if (ids.length && failed.size === ids.length) {
+    throw new Error(`Pokémon TCG API failed (${lastCode}). Try again in a few minutes.`);
+  }
+  return { prices: out, failed };
 }
 
 function pickPrice_(card, variant) {
