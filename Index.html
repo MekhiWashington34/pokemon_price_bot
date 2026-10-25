@@ -232,6 +232,9 @@ h2 { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color:
 <div class="toast" id="toast" hidden></div>
 
 <script>
+window.onerror = (msg, src, line, col) => { const l = (document.getElementById('loading') || document.body); if (l) l.innerHTML = '<p class="error">App error: ' + String(msg).replace(/</g,'&lt;') + ' (line ' + line + ')</p>'; };
+</script>
+<script>
 const state = { cards: [], history: [], shown: 60, give: [], get: [], getFound: [], sheetUrl: '' };
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -243,7 +246,7 @@ const KEY_LABEL = { holofoil: 'Holofoil', reverseHolofoil: 'Reverse Holo', norma
 function img(id) {
   if (!id) return '';
   const i = id.indexOf('-');
-  return `https://images.pokemontcg.io/${encodeURIComponent(id.slice(0, i))}/${encodeURIComponent(id.slice(i + 1))}.png`;
+  return `https:\/\/images.pokemontcg.io/${encodeURIComponent(id.slice(0, i))}/${encodeURIComponent(id.slice(i + 1))}.png`;
 }
 function parseChange(s) {
   const m = String(s).match(/([+\-−])\$([\d,]+\.\d\d)\s*\(([+\-]?[\d.]+)%\)/);
