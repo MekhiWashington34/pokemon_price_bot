@@ -8,7 +8,8 @@ function doGet() {
   const t = HtmlService.createTemplateFromFile('Index');
   let data;
   try { data = getCollection(); } catch (e) { data = { error: String(e.message || e) }; }
-  t.boot = JSON.stringify(data).replace(/</g, '\\u003c');
+  // Apps Script drops anything after // in page scripts, so escape every slash.
+  t.boot = JSON.stringify(data).replace(/</g, '\\u003c').replace(/\//g, '\\/');
   return t.evaluate()
     .setTitle('BubTCG')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1, viewport-fit=cover')
