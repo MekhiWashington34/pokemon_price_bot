@@ -448,7 +448,7 @@ $('addForm').addEventListener('submit', async e => {
         <div><div class="t">${esc(c.name)}</div><div class="s">${esc(c.set)} · #${esc(c.number)}${c.rarity ? ' · ' + esc(c.rarity) : ''}</div></div>
         <label class="field">Version<select id="v-${i}">${opts}</select></label>
         <div class="two"><label class="field">Condition<select id="c-${i}">
-            <option>Near Mint</option><option>Lightly Played</option><option>Moderately Played</option><option>Heavily Played</option><option>Damaged</option></select></label>
+            <option>Mint</option><option>Near Mint</option><option>Lightly Played</option><option>Moderately Played</option><option>Heavily Played</option><option>Damaged</option></select></label>
           <label class="field">Qty<input id="q-${i}" type="number" min="1" value="1" inputmode="numeric"></label></div>
         <button class="btn" type="button" data-add="${i}">Add to collection</button></div>`;
     }).join('');

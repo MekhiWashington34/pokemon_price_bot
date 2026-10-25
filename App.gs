@@ -118,7 +118,7 @@ function addCard(card) {
   let row = CONFIG.FIRST_ROW + block.findIndex(r => !String(r[0]).trim());
   if (row < CONFIG.FIRST_ROW) row = last + 1;
   sheet.getRange(row, 1, 1, 8).setValues([[card.name, card.set, "'" + card.number, card.rarity || '',
-                                            card.condition || 'Near Mint', '', variant, qty]]);
+                                            card.condition || 'Mint', '', variant, qty]]);
   if (price) sheet.getRange(row, CONFIG.COL.estValue).setValue(price);
   sheet.getRange(row, 11, 1, 2).setValues([['No', 'Added in BubTCG']]);
   sheet.getRange(row, CONFIG.COL.id, 1, 2).setValues([[card.id, price || '']]);
